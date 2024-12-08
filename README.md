@@ -11,17 +11,11 @@ QuickInvoice is a Spring Boot application that provides a REST API for dynamic P
 - Uses Courier Bold font for consistent styling
 - Web-based invoice input form with direct PDF download
 
-## Technology Stack
-- Spring Boot
-- Thymeleaf
-- iText PDF Library
-- Java 8+
-- Maven
+### Technology Stack
+- Spring Boot, Thymeleaf, iText PDF Library, Java 8+, JUnit, Maven
 
-## Prerequisites
-- Java 8 or higher
-- Maven
-- Postman (optional, for testing)
+### Prerequisites
+- Java 8 or higher, Maven, Postman (optional, for testing)
 
 ## Project Structure
 ```
@@ -47,6 +41,9 @@ src/
 └── test/
     └── java/
         └── com.quickinvoice/
+            └── controller/
+                └── InvoiceControllerTest.java
+
 ```
 
 ## Installation
@@ -67,10 +64,10 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-## API Endpoint
+## API Endpoints
 
 ### Generate PDF
-- **URL:** `/api/generate`
+- **URL:**  `/api/generate`
 - **Method:** POST
 - **Content-Type:** application/json
 
@@ -101,9 +98,19 @@ mvn spring-boot:run
 - Content-Type: application/x-www-form-urlencoded
 
 ## Testing
-- Use Postman to send POST requests to the endpoint.
-- Test the web-based invoice generation form at `/invoice/create`
-- Verify PDF generation and storage
+
+The QuickInvoice application includes a comprehensive test suite to ensure the reliability and stability of the PDF generation functionality. The test cases cover the following scenarios:
+
+- Successful PDF generation
+- Error handling for PDF generation failures
+- Mocking of external dependencies
+
+To run the tests, use the following command:
+```
+mvn test
+```
+The test results will be displayed in the console, and you can also view the individual test case reports.
+
 
 ## Error Handling
 - Returns HTTP 500 for internal server errors
@@ -112,8 +119,3 @@ mvn spring-boot:run
 ## Performance Considerations
 - Caches PDFs to avoid regeneration
 - Uses efficient byte stream processing
-
-## Future Improvements
-- Add more robust error handling
-- Implement PDF template customization
-- Add more comprehensive logging
