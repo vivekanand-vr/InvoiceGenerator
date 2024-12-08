@@ -73,7 +73,7 @@ public class QuickInvoiceService {
 
             for (InvoiceItem item : invoice.getItems()) {
                 productInfoTable.addCell(new Cell().add(new Paragraph(item.getName())));
-                productInfoTable.addCell(new Cell().add(new Paragraph(item.getQuantity())));
+                productInfoTable.addCell(new Cell().add(new Paragraph(String.valueOf(item.getQuantity()))));
                 productInfoTable.addCell(new Cell().add(new Paragraph(String.valueOf(item.getRate()))));
                 productInfoTable.addCell(new Cell().add(new Paragraph(String.valueOf(item.getAmount()))));
             }

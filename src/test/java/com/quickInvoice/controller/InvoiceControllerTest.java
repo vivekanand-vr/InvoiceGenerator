@@ -43,7 +43,7 @@ class InvoiceControllerTest {
         List<InvoiceItem> items = new ArrayList<>();
         InvoiceItem item = new InvoiceItem();
         item.setName("Ponds Powder");
-        item.setQuantity("12 Units");
+        item.setQuantity(12);
         item.setRate(45);
         item.setAmount(540);
         items.add(item);

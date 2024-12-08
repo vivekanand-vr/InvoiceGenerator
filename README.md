@@ -83,7 +83,7 @@ mvn spring-boot:run
     "items": [
         {
             "name": "Product 1",
-            "quantity": "12 Nos",
+            "quantity": 12,
             "rate": 123.00,
             "amount": 1476.00
         }
