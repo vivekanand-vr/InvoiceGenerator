@@ -1,4 +1,4 @@
-package com.invoiceGen.dao;
+package com.quickInvoice.dao;
 
 import org.springframework.stereotype.Repository;
 import java.io.File;
@@ -10,10 +10,10 @@ import java.util.Base64;
 import java.util.UUID;
 
 @Repository
-public class PdfStorageRepository {
+public class QuickInvoiceRepository {
     private static final String PDF_STORAGE_DIR = "generated-pdfs/";
 
-    public PdfStorageRepository() {
+    public QuickInvoiceRepository() {
         // Ensure directory exists
         try {
             Files.createDirectories(Paths.get(PDF_STORAGE_DIR));

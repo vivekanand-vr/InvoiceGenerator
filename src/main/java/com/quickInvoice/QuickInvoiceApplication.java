@@ -1,13 +1,13 @@
-package com.invoiceGen;
+package com.quickInvoice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class InvoiceGeneratorApplication {
+public class QuickInvoiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(InvoiceGeneratorApplication.class, args);
+		SpringApplication.run(QuickInvoiceApplication.class, args);
 	}
 
 }

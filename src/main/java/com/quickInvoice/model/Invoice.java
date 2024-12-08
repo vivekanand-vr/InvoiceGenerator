@@ -1,4 +1,4 @@
-package com.invoiceGen.model;
+package com.quickInvoice.model;
 
 import java.util.List;
 import lombok.Data;

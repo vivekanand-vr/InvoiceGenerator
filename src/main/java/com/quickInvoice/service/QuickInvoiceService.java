@@ -1,8 +1,5 @@
-package com.invoiceGen.service;
+package com.quickInvoice.service;
 
-import com.invoiceGen.model.Invoice;
-import com.invoiceGen.model.InvoiceItem;
-import com.invoiceGen.dao.PdfStorageRepository;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -10,6 +7,9 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
+import com.quickInvoice.dao.QuickInvoiceRepository;
+import com.quickInvoice.model.Invoice;
+import com.quickInvoice.model.InvoiceItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +18,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @Service
-public class PdfGenerationService {
+public class QuickInvoiceService {
 
     @Autowired
-    private PdfStorageRepository pdfStorageRepository;
+    private QuickInvoiceRepository pdfStorageRepository;
 
     public byte[] generatePdf(Invoice invoice) throws IOException {
         // Generate unique hash to check if PDF already exists

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Invoice Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .item-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .item-section h4 {
+            margin-top: 0;
+            color: #555;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .add-item-btn {
+            margin-top: 10px;
+        }
+
+        .total {
+            font-weight: bold;
+            font-size: 1.2em;
+            text-align: right;
+        }
+    </style>
+    <script>
+        function addItem() {
+            const itemsContainer = document.getElementById('items-container');
+            const itemIndex = itemsContainer.children.length;
+
+            const newItem = `
+                <div class="item-section">
+                    <h4>Item ${itemIndex + 1}</h4>
+                    <input type="text" name="items[${itemIndex}].name" placeholder="Item Name" required>
+                    <input type="number" name="items[${itemIndex}].quantity" placeholder="Quantity" required oninput="calculateTotal(this)">
+                    <input type="number" step="0.01" name="items[${itemIndex}].rate" placeholder="Rate" required oninput="calculateTotal(this)">
+                    <input type="number" step="0.01" name="items[${itemIndex}].amount" placeholder="Amount" readonly>
+                </div>`;
+            
+            itemsContainer.insertAdjacentHTML('beforeend', newItem);
+        }
+
+        function calculateTotal(input) {
+            const section = input.closest('.item-section');
+            const quantity = parseFloat(section.querySelector('input[name*=".quantity"]').value) || 0;
+            const rate = parseFloat(section.querySelector('input[name*=".rate"]').value) || 0;
+            const amountField = section.querySelector('input[name*=".amount"]');
+            amountField.value = (quantity * rate).toFixed(2);
+        }
+    </script>
+</head>
+<body>
+    <h1>Invoice Generator</h1>
+    <form th:action="@{/invoice/generate}" th:object="${invoice}" method="post">
+        <div class="form-group">
+            <label>Seller Details</label>
+            <input type="text" th:field="*{seller}" placeholder="Seller Name" required>
+            <input type="text" th:field="*{sellerGstin}" placeholder="Seller GSTIN" required>
+            <input type="text" th:field="*{sellerAddress}" placeholder="Seller Address" required>
+        </div>
+
+        <div class="form-group">
+            <label>Buyer Details</label>
+            <input type="text" th:field="*{buyer}" placeholder="Buyer Name" required>
+            <input type="text" th:field="*{buyerGstin}" placeholder="Buyer GSTIN" required>
+            <input type="text" th:field="*{buyerAddress}" placeholder="Buyer Address" required>
+        </div>
+
+        <div class="form-group">
+            <label>Invoice Items</label>
+            <div id="items-container">
+                <!-- Initial items will be populated dynamically -->
+                <div th:each="item, itemStat : *{items}" class="item-section">
+                    <h4 th:text="'Item ' + ${itemStat.index + 1}"></h4>
+                    <input type="text" th:field="*{items[__${itemStat.index}__].name}" placeholder="Item Name" required>
+                    <input type="number" th:field="*{items[__${itemStat.index}__].quantity}" placeholder="Quantity" required oninput="calculateTotal(this)">
+                    <input type="number" step="0.01" th:field="*{items[__${itemStat.index}__].rate}" placeholder="Rate" required oninput="calculateTotal(this)">
+                    <input type="number" step="0.01" th:field="*{items[__${itemStat.index}__].amount}" placeholder="Amount" readonly>
+                </div>
+            </div>
+            <button type="button" class="btn add-item-btn" onclick="addItem()">Add Item</button>
+        </div>
+
+        <button type="submit" class="btn">Generate Invoice PDF</button>
+    </form>
+</body>
+</html>
