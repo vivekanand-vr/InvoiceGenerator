@@ -1,7 +1,7 @@
-# Invoice Generator Application
+# QuickInvoice
 
 ## Overview
-This Spring Boot application provides a REST API for dynamic PDF generation, specifically designed for creating invoices based on input data. The application uses iText for PDF generation and implements caching to avoid regenerating existing PDFs.
+QuickInvoice is a Spring Boot application that provides a REST API for dynamic PDF generation, specifically designed for creating invoices based on input data. The application uses iText for PDF generation and implements caching to avoid regenerating existing PDFs.
 
 ## Features
 - Dynamic PDF generation from JSON input
@@ -9,9 +9,11 @@ This Spring Boot application provides a REST API for dynamic PDF generation, spe
 - REST API endpoint for invoice PDF generation
 - Unique PDF identification and caching
 - Uses Courier Bold font for consistent styling
+- Web-based invoice input form with direct PDF download
 
 ## Technology Stack
 - Spring Boot
+- Thymeleaf
 - iText PDF Library
 - Java 8+
 - Maven
@@ -26,30 +28,33 @@ This Spring Boot application provides a REST API for dynamic PDF generation, spe
 src/
 ├── main/
 │   ├── java/
-│   │   └── com.invoiceGen/
+│   │   └── com.quickinvoice/
 │   │       ├── controller/
-│   │       │   └── InvoiceController.java
+│   │       │   ├── InvoiceController.java
+│   │       │   └── InvoiceWebController.java
 │   │       ├── model/
 │   │       │   ├── Invoice.java
 │   │       │   └── InvoiceItem.java
 │   │       ├── dao/
-│   │       │   └── PdfStorageRepository.java
+│   │       │   └── QuickInvoiceRepository.java
 │   │       ├── service/
-│   │       │   └── PdfGenerationService.java
-│   │       └── InvoiceGeneratorApplication.java
+│   │       │   └── QuickInvoiceService.java
+│   │       └── QuickInvoiceApplication.java
 │   └── resources/
+│       ├── templates/
+│       │       └── invoice-form.html
 │       └── application.properties
 └── test/
     └── java/
-        └── com.invoiceGen/
+        └── com.quickinvoice/
 ```
 
 ## Installation
 
 1. Clone the repository:
 ```
-git clone https://github.com/vivekanand-vr/invoiceGenerator.git
-cd invoiceGenerator
+git clone https://github.com/vivekanand-vr/quickInvoice.git
+cd quickInvoice
 ```
 
 2. Build the project:
@@ -65,7 +70,7 @@ mvn spring-boot:run
 ## API Endpoint
 
 ### Generate PDF
-- **URL:** `/api/pdf/generate`
+- **URL:** `/api/generate`
 - **Method:** POST
 - **Content-Type:** application/json
 
@@ -89,8 +94,15 @@ mvn spring-boot:run
 }
 ```
 
+## Generate PDF from Web
+
+- URL: `/invoice/generate`
+- Method: POST
+- Content-Type: application/x-www-form-urlencoded
+
 ## Testing
-- Use Postman to send POST requests to the endpoint
+- Use Postman to send POST requests to the endpoint.
+- Test the web-based invoice generation form at `/invoice/create`
 - Verify PDF generation and storage
 
 ## Error Handling
