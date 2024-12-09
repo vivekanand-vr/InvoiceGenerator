@@ -13,37 +13,15 @@ import com.quickInvoice.service.QuickInvoiceService;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/invoice")
 public class InvoiceController {
 
     @Autowired
     private QuickInvoiceService pdfGenerationService;
 
-    @PostMapping("/generate")
+    @PostMapping("/pdf")
     public ResponseEntity<byte[]> generateInvoicePdf(@RequestBody Invoice invoiceRequest) {
         try {
-            byte[] pdfBytes = pdfGenerationService.generatePdf(invoiceRequest);
-
-            // Prepare HTTP headers
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF);
-            headers.setContentDispositionFormData("filename", "invoice.pdf");
-            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-
-            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/generate-from-web")
-    public ResponseEntity<byte[]> generateInvoicePdfFromWeb(@ModelAttribute Invoice invoiceRequest) {
-        try {
-            // Remove any empty items
-            invoiceRequest.setItems(invoiceRequest.getItems().stream()
-                .filter(item -> item.getName() != null && !item.getName().isEmpty())
-                .toList());
-
             byte[] pdfBytes = pdfGenerationService.generatePdf(invoiceRequest);
 
             // Prepare HTTP headers

@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.quickInvoice.model.Invoice;
-import com.quickInvoice.service.QuickInvoiceService;
-
+import com.quickInvoice.service.HTMLInvoiceService;
 import java.io.IOException;
 
 @Controller
 @RequestMapping("/invoice")
 public class InvoiceWebController {
-
+  
     @Autowired
-    private QuickInvoiceService pdfGenerationService;
+    private HTMLInvoiceService htmlInvoiceService;
 
     @GetMapping("/create")
     public String showInvoiceForm(Model model) {
@@ -33,8 +32,8 @@ public class InvoiceWebController {
         return "invoice-form";
     }
 
-    @PostMapping("/generate")
-    public ResponseEntity<byte[]> generateInvoice(@ModelAttribute("invoice") Invoice invoice) {
+    @PostMapping("/html")
+    public ResponseEntity<byte[]> generateInvoice(@ModelAttribute("invoice") Invoice invoice) throws Exception {
         try {
             // Remove any empty items
             invoice.setItems(invoice.getItems().stream()
@@ -42,7 +41,7 @@ public class InvoiceWebController {
                 .toList());
             
             // Generate PDF
-            byte[] pdfBytes = pdfGenerationService.generatePdf(invoice);
+            byte[] pdfBytes = htmlInvoiceService.generateInvoicePdf(invoice);
 
             // Prepare HTTP headers for download
             HttpHeaders headers = new HttpHeaders();

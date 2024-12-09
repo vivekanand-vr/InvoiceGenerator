@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .company-info {
+            text-align: right;
+        }
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .total-section {
+            text-align: right;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-header">
+        <div class="company-logo">
+            <img src="src/main/resources/assets/Z-SnapStudios.png" alt="Company Logo" width="150" />
+        </div>
+        <div class="company-info">
+            <h1 th:text="${invoice.sellerName}">Company Name</h1>
+            <p th:text="${invoice.sellerAddress}">Address</p>
+            <p th:text="'GSTIN: ' + ${invoice.sellerGstin}">GSTIN</p>
+        </div>
+    </div>
+
+    <div class="invoice-details">
+        <h2>Invoice</h2>
+        <p>Invoice Number: <span th:text="${invoice.invoiceNumber}">INV-001</span></p>
+        <p>Date: <span th:text="${invoice.invoiceDate}">2024-02-15</span></p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${invoice.items}">
+                <td th:text="${item.name}">Product Name</td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="${item.rate}">100.00</td>
+                <td th:text="${item.amount}">100.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="total-section">
+        <p>Subtotal: <span th:text="${#numbers.formatDecimal(invoice.subtotal, 0, 'COMMA', 2, 'POINT')}">1000.00</span></p>
+        <p>Tax (18%): <span th:text="${#numbers.formatDecimal(invoice.tax, 0, 'COMMA', 2, 'POINT')}">180.00</span></p>
+        <h3>Total: <span th:text="${#numbers.formatDecimal(invoice.total, 0, 'COMMA', 2, 'POINT')}">1180.00</span></h3>
+    </div>
+</body>
+</html>
