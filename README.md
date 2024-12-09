@@ -7,9 +7,9 @@ QuickInvoice is a Spring Boot application that provides a REST API for dynamic P
 - Dynamic PDF generation from JSON input
 - Local PDF storage and retrieval
 - REST API endpoint for invoice PDF generation
+- Web-based invoice input form with direct PDF download
 - Unique PDF identification and caching
 - Uses Courier Bold font for consistent styling
-- Web-based invoice input form with direct PDF download
 
 ### Technology Stack
 - Spring Boot, Thymeleaf, iText PDF Library, Java 8+, JUnit, Maven
@@ -28,15 +28,20 @@ src/
 │   │       │   └── InvoiceWebController.java
 │   │       ├── model/
 │   │       │   ├── Invoice.java
-│   │       │   └── InvoiceItem.java
+│   │       │   ├── InvoiceItem.java
+│   │       │   └── InvoiceView.java
 │   │       ├── dao/
 │   │       │   └── QuickInvoiceRepository.java
 │   │       ├── service/
+│   │       │   ├── HTMLInvoiceService.java
 │   │       │   └── QuickInvoiceService.java
 │   │       └── QuickInvoiceApplication.java
 │   └── resources/
+│       ├── assets/
+│       │       └── company-logo.png
 │       ├── templates/
-│       │       └── invoice-form.html
+│       │       |── invoice-form.html
+│       │       └── invoice-template.html
 │       └── application.properties
 └── test/
     └── java/
@@ -67,9 +72,10 @@ mvn spring-boot:run
 ## API Endpoints
 
 ### Generate PDF
-- **URL:**  `/api/generate`
+- **URL:**  `/invoice/pdf`
 - **Method:** POST
 - **Content-Type:** application/json
+- Generates PDF manually using iText utility classes
 
 #### Request Body Example
 ```json
@@ -93,9 +99,15 @@ mvn spring-boot:run
 
 ## Generate PDF from Web
 
-- URL: `/invoice/generate`
+- URL: `/invoice/create`
 - Method: POST
+- Internally Submits to `/invoice/html`
 - Content-Type: application/x-www-form-urlencoded
+- Generates PDF using the `invoice-template.html` as template and converting it into PDF format.
+
+### Snapshot of Web UI
+![web-view](https://github.com/user-attachments/assets/dafa5476-208d-4e5d-922a-7c0d8cbb313f)
+
 
 ## Testing
 
